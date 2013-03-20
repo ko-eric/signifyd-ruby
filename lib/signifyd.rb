@@ -1,6 +1,7 @@
 # External Dependencies
 require 'net/http'
 require 'open-uri'
+require 'base64'
 
 # Gem Version
 require 'signifyd/version'
@@ -11,9 +12,9 @@ require 'signifyd/errors/authentication_error'
 require 'signifyd/errors/invalid_request_error'
 
 module Signifyd
-  @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/ca-certificates.crt')
+  @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/signifyd.crt')
   @@api_key = nil
-  @@api_base = 'https://api.signifyd.com'
+  @@api_base = 'api.signifyd.com'
   @@api_version = '/v1'
   @@verify_ssl_certs = true
   
@@ -53,7 +54,11 @@ module Signifyd
     @@verify_ssl_certs
   end
   
-  def self.request(method, url, api_key, params)
+  def self.configured?
+    !!@@api_key
+  end
+  
+  def self.request(method, url, params, api_key=nil)
     api_key ||= @@api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key
     
@@ -68,10 +73,10 @@ module Signifyd
     # Post to the API with credentials
     http          = Net::HTTP.new(Signifyd.api_base, 443)
     http.use_ssl  = true
-    
+        
     store = OpenSSL::X509::Store.new
     store.set_default_paths
-    store.add_cert(OpenSSL::X509::Certificate.new(File.read('data/signifyd.crt')))
+    store.add_cert(OpenSSL::X509::Certificate.new(File.read(@@ssl_bundle_path)))
     
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
     http.cert_store  = store
@@ -81,14 +86,10 @@ module Signifyd
     case method.to_s
     when "get"
     when "post"
-      response = http.post("#{Signifyd.api_version}#{url}?#{params}", "#{raw_json.to_json}", headers)
+      response = http.post("#{Signifyd.api_version}#{url}?#{params}", params, headers)
       return response
     when "put"
     when "delete"
     end
-  end
-  
-  def self.configured?
-    !!@@api_key
   end
 end
