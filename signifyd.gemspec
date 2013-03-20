@@ -14,8 +14,6 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
   s.rubyforge_project = 'signifyd'
-  
-  s.add_dependency 'net-http'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rails'
