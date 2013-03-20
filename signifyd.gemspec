@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
 require File.expand_path('../lib/signifyd/version', __FILE__)
 
-spec = Gem::Specification.new do |s|
-  s.name = 'signifyd'
-  s.version = Signifyd::VERSION
-  s.summary = 'Ruby bindings for the Signifyd API'
+Gem::Specification.new do |s|
+  s.name        = 'signifyd'
+  s.version     = Signifyd::VERSION
+  s.summary     = 'Ruby bindings for the Signifyd API'
   s.description = 'A ruby wrapper for the Singifyd fraud detection API.'
-  s.authors = ['Alex Manelis']
-  s.email = ['manelis@signifyd.com']
-  s.homepage = 'https://signifyd.com/docs/api'
+  s.authors     = ['Alex Manelis']
+  s.email       = ['manelis@signifyd.com']
+  s.homepage    = 'https://signifyd.com/docs/api'
 
   s.files = Dir['Rakefile', '{bin,lib,spec}/**/*', 'README*'] & `git ls-files`.split("\n")
 
