@@ -1,4 +1,1 @@
-require 'baboon/version'
-
-module Signifyd
-end
+require 'signifyd/version'

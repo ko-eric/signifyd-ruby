@@ -9,8 +9,6 @@ end
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../lib/signifyd', __FILE__)
 
-Dir["spec/support/**/*.rb"].each { |f| require f }
-
 PROJECT_ROOT = File.expand_path('../..', __FILE__)
 $LOAD_PATH << File.join(PROJECT_ROOT, 'lib')
 
