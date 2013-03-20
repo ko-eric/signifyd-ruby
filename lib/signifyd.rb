@@ -1,5 +1,6 @@
 # External Dependencies
 require 'net/http'
+require 'open-uri'
 
 # Gem Version
 require 'signifyd/version'
