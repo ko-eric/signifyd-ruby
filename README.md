@@ -18,17 +18,34 @@ The installation can be used for a stand alone ruby application, Sinatra or a Ra
 For Rails applications, include in Gemfile.
 
 ```ruby
-	gem 'signifyd'
+gem 'signifyd'
 ```
 
 Now that you have installed the gem. Go ahead and configured your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
 
 ```ruby
-	require 'signifyd'
-	Signifyd.api_key = 'YOUR-API-KEY'
+require 'signifyd'
+Signifyd.api_key = 'YOUR-API-KEY'
 ```
 	
 Otherwise include and set this in an intialization block of your Sinatra or Ruby application. This will persist throughout the lifetime of your application. 
+
+## Errors
+You can catch your erros based on these sub classes. 
+
+```ruby
+begin
+  	# Make your call
+rescue Signifyd::InvalidRequestError => e
+	# The request you made was invalid
+rescue Signifyd::AuthenticationError => e
+	# The api_key is most likely incorrect or not set
+rescue => e
+  	# Something else happened, completely unrelated to Signifyd
+end
+```
+
+Upon a successful case/investigation creation or any endpoint called. Signifyd will return an [HTTP status code](http://httpstatus.es/) that makes sense for the resource called and data manipulated for the restfull endpoint.
 
 ## Methods
 Currently Signifyd supports the following methods for investigations against your transactions. The Cases endpoint is where you will start. Encode your transaction to match the JSON we require for a successful creation and make your request.
@@ -39,7 +56,7 @@ To create a case, follow the instructions below. Please read the [documentation]
 To create a case, encode your json to match our documentation](https://www.signifyd.com/docs/api) and then pass it into this method:
 
 ```ruby
-	request = Signifyd::Case.create(json, {})
+request = Signifyd::Case.create(json, {})
 ```
 	
 Upon successful case post, this will return a response that contains data on whether or not this was successful. It will look something like this:
