@@ -53,10 +53,73 @@ Currently Signifyd supports the following methods for investigations against you
 ### Cases
 To create a case, follow the instructions below. Please read the [documentation](https://www.signifyd.com/docs/api) under your account. It is imperative that you follow the guides correctly and encode all pieces of data with the correct format and data types otherwise this will effect the score we rank your transaction at. 
 
-To create a case, encode your json to match our documentation](https://www.signifyd.com/docs/api) and then pass it into this method:
+To create a case, align all hash attributes to match our [documentation](https://www.signifyd.com/docs/api) and then call the create method. We will do our best to parse through your request before actually making it to our server. Please follow the [documentation](https://www.signifyd.com/docs/api) verbatim. 
 
 ```ruby
-request = Signifyd::Case.create(json, {})
+transaction = {
+    "attackMethod" => "STOLEN_CC",
+    "purchase" => {
+        "browserIpAddress" => "50.141.59.109",
+               "createdAt" => "2013-02-21T18:37:35-05:00",
+                "currency" => "CAD",
+              "totalPrice" => "495.00",
+           "shippingPrice" => "20.00",
+                "products" => [
+            {
+                      "itemId" => 99496,
+                    "itemName" => "Fully-configurable fault-tolerant application",
+                "itemQuantity" => 7,
+                   "itemPrice" => "14.49",
+                  "itemWeight" => 3
+            }
+        ]
+    },
+    "recipient" => {
+                 "fullName" => "Mackenzie Stracke",
+        "confirmationEmail" => nil,
+          "deliveryAddress" => {
+            "streetAddress" => "7296 Gerhold Wall",
+                     "unit" => nil,
+                     "city" => "Palo Alto",
+             "provinceCode" => "CA",
+               "postalCode" => "94306",
+              "countryCode" => "US",
+                 "latitude" => "37.4248",
+                "longitude" => "-122.148"
+        }
+    },
+    "card" => {
+        "cardHolderName" => "Mackenzie Stracke",
+                   "bin" => nil,
+        "billingAddress" => {
+            "streetAddress" => "7296 Gerhold Wall",
+                     "unit" => nil,
+                     "city" => "Palo Alto",
+             "provinceCode" => "CA",
+               "postalCode" => "94306",
+              "countryCode" => "US",
+                 "latitude" => "37.4248",
+                "longitude" => "-122.148"
+        }
+    },
+     "userAccount" => {
+                        "email" => "aunta.davis@anderson.biz",
+                     "username" => "tad.ruel",
+                        "phone" => "822-476-4224 x5973",
+                  "createdDate" => nil,
+                "accountNumber" => nil,
+                  "lastOrderId" => nil,
+          "aggregateOrderCount" => nil,
+        "aggregateOrderDollars" => nil,
+               "lastUpdateDate" => nil
+    }
+}
+```
+
+Now create your case with the given hashed data:
+
+```ruby
+request = Signifyd::Case.create(transaction, {})
 ```
 	
 Upon successful case post, this will return a response that contains data on whether or not this was successful. It will look something like this:
