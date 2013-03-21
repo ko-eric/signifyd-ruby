@@ -24,6 +24,7 @@ gem 'signifyd'
 Now that you have installed the gem. Go ahead and configured your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
 
 ```ruby
+require 'signifyd'
 Signifyd.api_key = 'YOUR-API-KEY'
 ```
 	
