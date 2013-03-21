@@ -58,27 +58,27 @@ To create a case, align all hash attributes to match our [documentation](https:/
 ```ruby
 transaction = {
     "attackMethod" => "STOLEN_CC",
-    "purchase" => {
+        "purchase" => {
         "browserIpAddress" => "50.141.59.109",
                "createdAt" => "2013-02-21T18:37:35-05:00",
                 "currency" => "CAD",
               "totalPrice" => "495.00",
            "shippingPrice" => "20.00",
                 "products" => [
-            {
-                      "itemId" => 99496,
-                    "itemName" => "Fully-configurable fault-tolerant application",
-                "itemQuantity" => 7,
-                   "itemPrice" => "14.49",
-                  "itemWeight" => 3
-            }
+                    {
+                              "itemId" => 61389,
+                            "itemName" => "Progressive disintermediate moderator",
+                        "itemQuantity" => 6,
+                           "itemPrice" => "38.57",
+                          "itemWeight" => 4
+                    }
         ]
     },
     "recipient" => {
-                 "fullName" => "Mackenzie Stracke",
+                 "fullName" => "Greyson Yundt",
         "confirmationEmail" => nil,
           "deliveryAddress" => {
-            "streetAddress" => "7296 Gerhold Wall",
+            "streetAddress" => "9822 Terrance Valleys",
                      "unit" => nil,
                      "city" => "Palo Alto",
              "provinceCode" => "CA",
@@ -89,10 +89,10 @@ transaction = {
         }
     },
     "card" => {
-        "cardHolderName" => "Mackenzie Stracke",
+        "cardHolderName" => "Greyson Yundt",
                    "bin" => nil,
         "billingAddress" => {
-            "streetAddress" => "7296 Gerhold Wall",
+            "streetAddress" => "9822 Terrance Valleys",
                      "unit" => nil,
                      "city" => "Palo Alto",
              "provinceCode" => "CA",
@@ -102,16 +102,40 @@ transaction = {
                 "longitude" => "-122.148"
         }
     },
-     "userAccount" => {
-                        "email" => "aunta.davis@anderson.biz",
-                     "username" => "tad.ruel",
-                        "phone" => "822-476-4224 x5973",
+    "userAccount" => {
+                        "email" => "annie.dach@schambergerdaniel.name",
+                     "username" => "lydia_rowe",
+                        "phone" => "268.513.3896",
                   "createdDate" => nil,
                 "accountNumber" => nil,
                   "lastOrderId" => nil,
           "aggregateOrderCount" => nil,
         "aggregateOrderDollars" => nil,
                "lastUpdateDate" => nil
+    },
+    "seller" => {
+                    "name" => "Amazon",
+                  "domain" => "amazon.com",
+         "shipFromAddress" => {
+            "streetAddress" => "1850 Mercer Rd",
+                     "unit" => nil,
+                     "city" => "Lexington",
+             "provinceCode" => "KY",
+               "postalCode" => "40511",
+              "countryCode" => "US",
+                 "latitude" => nil,
+                "longitude" => nil
+        },
+        "corporateAddress" => {
+            "streetAddress" => "410 Terry Ave",
+                     "unit" => "3L",
+                     "city" => "Seattle",
+             "provinceCode" => "WA",
+               "postalCode" => "98109",
+              "countryCode" => "US",
+                 "latitude" => nil,
+                "longitude" => nil
+        }
     }
 }
 ```
