@@ -18,14 +18,14 @@ The installation can be used for a stand alone ruby application, Sinatra or a Ra
 For Rails applications, include in Gemfile.
 
 ```ruby
-gem 'signifyd'
+	gem 'signifyd'
 ```
 
 Now that you have installed the gem. Go ahead and configured your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
 
 ```ruby
-require 'signifyd'
-Signifyd.api_key = 'YOUR-API-KEY'
+	require 'signifyd'
+	Signifyd.api_key = 'YOUR-API-KEY'
 ```
 	
 Otherwise include and set this in an intialization block of your Sinatra or Ruby application. This will persist throughout the lifetime of your application. 
@@ -39,7 +39,7 @@ To create a case, follow the instructions below. Please read the [documentation]
 To create a case, encode your json to match our documentation](https://www.signifyd.com/docs/api) and then pass it into this method:
 
 ```ruby
-request = Signifyd::Case.create(json, {})
+	request = Signifyd::Case.create(json, {})
 ```
 	
 Upon successful case post, this will return a response that contains data on whether or not this was successful. It will look something like this:
