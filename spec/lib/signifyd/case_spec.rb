@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Signifyd::Case do
   context '.create' do
+    let(:hash) { SignifydRequests.valid_case }
+    let(:json) { JSON.dump(hash) }
+    
     context 'when creating a case with a valid API key' do
       context 'and passing the correct parameters' do
-        let(:hash) { SignifydRequests.valid_case }
-        let(:json) { JSON.dump(hash) }
-        
         before {
           Signifyd.api_key = SIGNIFYD_API_KEY
           
@@ -24,6 +24,7 @@ describe Signifyd::Case do
         }
         
         it { should_not be_nil }
+        it { should be_true }
       end
 
       context 'and passing incorrect or nil parameters' do
