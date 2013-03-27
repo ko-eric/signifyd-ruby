@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear! 'rails'
+
 require 'simplecov'
 SimpleCov.start do
   add_group 'Signifyd', 'lib/'
