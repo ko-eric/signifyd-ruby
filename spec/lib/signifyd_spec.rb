@@ -4,6 +4,43 @@ describe Signifyd do
   let(:hash) { SignifydRequests.valid_case }
   let(:json) { JSON.dump(hash) }
   
+  context '.verify_ssl_certs' do
+    context 'when calling for the verify_ssl_certs' do
+      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      after { Signifyd.api_key = nil }
+      
+      subject {
+        Signifyd.verify_ssl_certs = true
+      }
+      
+      it { should be_true }
+      it { should_not be_nil }
+      it {
+        expect(subject).to eq(true)
+      }
+    end
+  end
+  
+  context '.verify_ssl_certs=' do
+    context 'when setting the verify_ssl_certs' do
+      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      after { 
+        Signifyd.api_key = nil 
+        Signifyd.verify_ssl_certs = true
+      }
+      
+      subject { 
+        Signifyd.verify_ssl_certs = false
+      }
+      
+      it { should be_false }
+      it { should_not be_nil }
+      it {
+        expect(subject).to eq(false)
+      }
+    end
+  end
+  
   context '.api_base=' do
     context 'when setting the api_base' do
       before { Signifyd.api_key = SIGNIFYD_API_KEY }
