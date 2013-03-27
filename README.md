@@ -77,10 +77,10 @@ transaction = {
     },
     "recipient" => {
                  "fullName" => "Greyson Yundt",
-        "confirmationEmail" => nil,
+        "confirmationEmail" => "greyson.yundt@domain.com",
           "deliveryAddress" => {
             "streetAddress" => "9822 Terrance Valleys",
-                     "unit" => nil,
+                     "unit" => "Apt 2323",
                      "city" => "Palo Alto",
              "provinceCode" => "CA",
                "postalCode" => "94306",
@@ -91,10 +91,10 @@ transaction = {
     },
     "card" => {
         "cardHolderName" => "Greyson Yundt",
-                   "bin" => nil,
+                   "bin" => 407441,
         "billingAddress" => {
             "streetAddress" => "9822 Terrance Valleys",
-                     "unit" => nil,
+                     "unit" => "Apt 2323",
                      "city" => "Palo Alto",
              "provinceCode" => "CA",
                "postalCode" => "94306",
@@ -124,8 +124,8 @@ transaction = {
              "provinceCode" => "KY",
                "postalCode" => "40511",
               "countryCode" => "US",
-                 "latitude" => nil,
-                "longitude" => nil
+                 "latitude" => "38.3241",
+                "longitude" => "-127.342"
         },
         "corporateAddress" => {
             "streetAddress" => "410 Terry Ave",
@@ -134,8 +134,8 @@ transaction = {
              "provinceCode" => "WA",
                "postalCode" => "98109",
               "countryCode" => "US",
-                 "latitude" => nil,
-                "longitude" => nil
+                 "latitude" => "22.3216",
+                "longitude" => "-119.232"
         }
     }
 }
