@@ -69,6 +69,17 @@ module Signifyd
   def self.request(method, url, params, api_key=nil)
     api_key = api_key.nil? ? @@api_key : api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key 
+    
+    uname = (@@uname ||= RUBY_PLATFORM =~ /linux|darwin/i ? `uname -a 2>/dev/null`.strip : nil)
+    lang_version = "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})"
+    ua = {
+      :bindings_version => Signifyd::VERSION,
+      :lang => 'ruby',
+      :lang_version => lang_version,
+      :platform => RUBY_PLATFORM,
+      :publisher => 'stripe',
+      :uname => uname
+    }
         
     url = self.api_url(url) 
     payload = JSON.dump(params)   
