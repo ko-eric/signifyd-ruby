@@ -26,6 +26,18 @@ describe Signifyd do
   
   context '.api_base' do
     context 'when calling for the api_base' do 
+      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      after { Signifyd.api_key = nil }
+      
+      subject {
+        Signifyd.api_base
+      }
+      
+      it { should be_true }
+      it { should_not be_nil }
+      it {
+        expect(subject).to eq('https://api.signifyd.com')
+      }
     end
   end
   
