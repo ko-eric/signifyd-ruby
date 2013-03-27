@@ -125,13 +125,6 @@ module Signifyd
     rcode = response.code
   end
   
-  def self.to_query(hash)
-    hash.keys.inject('') do |query_string, key|
-      query_string << '&' unless key == hash.keys.first
-      query_string << "#{URI.encode(key.to_s)}=#{URI.encode(hash[key])}"
-    end
-  end
-  
   def self.execute_request(opts)
     RestClient::Request.execute(opts)
   end
