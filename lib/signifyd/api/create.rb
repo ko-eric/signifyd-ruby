@@ -4,7 +4,7 @@ module Signifyd
       module ClassMethods
         def create(params={}, api_key=nil)
           raise InvalidRequestError.new('You have passed invalid parameters to Case.create') if params == {}
-          Signifyd.request(:post, self.url, ActiveSupport::JSON.encode(params), api_key)
+          Signifyd.request(:post, self.url, params, api_key)
         end
       end
 
