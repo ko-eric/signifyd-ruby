@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.version     = Signifyd::VERSION
   s.summary     = 'Ruby bindings for the Signifyd API'
   s.description = 'A ruby wrapper for the Singifyd fraud detection API.'
+  s.license     = 'MIT'
   s.authors     = ['Alex Manelis']
   s.email       = ['manelis@signifyd.com']
   s.homepage    = 'https://signifyd.com/docs/api'
