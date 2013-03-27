@@ -16,6 +16,7 @@ describe Signifyd do
         Signifyd.api_version = '/v2' 
       }
       
+      it { should be_true }
       it { should_not be_nil }
       it {
         expect(subject).to eq('/v2')
@@ -32,6 +33,7 @@ describe Signifyd do
         Signifyd.api_version
       }
       
+      it { should be_true }
       it { should_not be_nil }
       it {
         expect(subject).to eq('/v1')
