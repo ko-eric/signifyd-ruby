@@ -62,6 +62,7 @@ describe Signifyd do
       }
       
       it { should_not be_nil }
+      it { should be_true }
     end
   end
 end
