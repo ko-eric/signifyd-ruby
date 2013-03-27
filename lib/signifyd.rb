@@ -1,8 +1,8 @@
 # External Dependencies
-require 'uri'
 require 'i18n'
 require 'active_support'
 require 'rest_client'
+require 'uri'
 require 'json'
 require 'base64'
 require 'openssl'
@@ -15,6 +15,7 @@ require 'signifyd/util'
 require 'signifyd/signifyd_object'
 require 'signifyd/resource'
 require 'signifyd/api/create'
+require 'signifyd/api/update'
 require 'signifyd/case'
 
 # Internal Dependencies
