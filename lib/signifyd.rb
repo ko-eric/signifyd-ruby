@@ -30,6 +30,7 @@ module Signifyd
   @@api_base = 'https://api.signifyd.com'
   @@api_version = '/v1'
   @@verify_ssl_certs = false
+  @@test_mode = false
   
   def self.api_url(url='')
     @@api_base + url
@@ -65,6 +66,17 @@ module Signifyd
 
   def self.verify_ssl_certs
     @@verify_ssl_certs
+  end
+  
+  def self.test_mode
+    @@test_mode
+  end
+  
+  def self.test_mode=(test_mode)
+    @@test_mode = test_mode
+    if test_mode 
+      Signifyd.api_base = 'https://api-staging.signifyd.com'
+    end
   end
   
   def self.request(method, url, params, api_key=nil)
