@@ -102,6 +102,23 @@ module Signifyd
         :verify_ssl=> OpenSSL::SSL::VERIFY_NONE
       }
     end
+
+    # Determine how to send the data and encode it based on what method we are sending
+    case method.to_s
+    when 'get'  || :get
+
+    when 'post' || :post
+
+    when 'put'  || :put
+      # we need to eject out the case_id from the params hash and append it to the url
+      if params.has_key?(:case_id) || params.has_key?('case_id')
+        case_id = params.delete(:case_id) 
+        url << "/#{case_id}"
+      end
+
+    when 'delete' || :delete
+
+    end
     
     opts = {
       :method => method,
@@ -145,7 +162,7 @@ module Signifyd
   def self.handle_restclient_error(e)
     case e
     when RestClient::ServerBrokeConnection, RestClient::RequestTimeout
-      message = "Could not connect to Signifyd (#{@@api_base}).  Please check your internet connection and try again.  If this problem persists, you should check Signifyd's service status at https://twitter.com/signifydstatus, or let us know at support@signifyd.com."
+      message = "Could not connect to Signifyd (#{@@api_base}).  Please check your internet connection and try again."
     when RestClient::SSLCertificateNotVerified
       message = "Could not verify Signifyd's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://api.signifyd.com/v1 in your browser.)  If this problem persists, let us know at support@signifyd.com."
     when SocketError
