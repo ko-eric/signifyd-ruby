@@ -1,22 +1,34 @@
 # External Dependencies
-require 'net/http'
-require 'open-uri'
+require 'uri'
+require 'i18n'
+require 'active_support'
+require 'rest_client'
+require 'json'
 require 'base64'
+require 'openssl'
 
 # Gem Version
 require 'signifyd/version'
+
+# API operations
+require 'signifyd/util'
+require 'signifyd/signifyd_object'
+require 'signifyd/resource'
+require 'signifyd/api/create'
+require 'signifyd/case'
 
 # Internal Dependencies
 require 'signifyd/errors/signifyd_error'
 require 'signifyd/errors/authentication_error'
 require 'signifyd/errors/invalid_request_error'
+require 'signifyd/errors/not_implemented_error'
 
 module Signifyd
   @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/signifyd.crt')
   @@api_key = nil
-  @@api_base = 'api.signifyd.com'
+  @@api_base = 'https://api.signifyd.com'
   @@api_version = '/v1'
-  @@verify_ssl_certs = true
+  @@verify_ssl_certs = false
   
   def self.api_url(url='')
     @@api_base + url
@@ -54,42 +66,115 @@ module Signifyd
     @@verify_ssl_certs
   end
   
+  def self.request(method, url, params, api_key=nil)
+    api_key = api_key.nil? ? @@api_key : api_key
+    raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key 
+        
+    url = self.api_url(url) 
+    payload = JSON.dump(params)   
+    authkey = Base64.encode64(api_key)
+    headers = {
+      "Content-Length"  => payload.size,
+      "Content-Type"    => "application/json", 
+      "Authorization"   => "Basic #{authkey}",
+      'User-Agent'      => "Signifyd Ruby #{@@api_version.gsub('/', '')}"
+    }
+    
+    if @@verify_ssl_certs
+      ssl_opts = {
+        :verify_ssl => OpenSSL::SSL::VERIFY_PEER,
+        :ssl_ca_file => @@ssl_bundle_path
+      }
+    else
+      ssl_opts = {
+        :verify_ssl=> OpenSSL::SSL::VERIFY_NONE
+      }
+    end
+    
+    opts = {
+      :method => method,
+      :url => url,
+      :headers => headers,
+      :open_timeout => 30,
+      :payload => payload,
+      :timeout => 80
+    }.merge(ssl_opts)
+    
+    begin
+      response = execute_request(opts)
+    rescue SocketError => e
+      self.handle_restclient_error(e)
+    rescue NoMethodError => e
+      if e.message =~ /\WRequestFailed\W/
+        e = APIConnectionError.new('Unexpected HTTP response code')
+        self.handle_restclient_error(e)
+      else
+        raise
+      end
+    rescue RestClient::ExceptionWithResponse => e
+      if rcode = e.http_code and rbody = e.http_body
+        self.handle_api_error(rcode, rbody)
+      else
+        self.handle_restclient_error(e)
+      end
+    rescue RestClient::Exception, Errno::ECONNREFUSED => e
+      self.handle_restclient_error(e)
+    end
+    
+    rbody = response.body
+    rcode = response.code
+  end
+  
+  def self.to_query(hash)
+    hash.keys.inject('') do |query_string, key|
+      query_string << '&' unless key == hash.keys.first
+      query_string << "#{URI.encode(key.to_s)}=#{URI.encode(hash[key])}"
+    end
+  end
+  
+  def self.execute_request(opts)
+    RestClient::Request.execute(opts)
+  end
+  
+  def self.handle_restclient_error(e)
+    case e
+    when RestClient::ServerBrokeConnection, RestClient::RequestTimeout
+      message = "Could not connect to Signifyd (#{@@api_base}).  Please check your internet connection and try again.  If this problem persists, you should check Signifyd's service status at https://twitter.com/signifydstatus, or let us know at support@signifyd.com."
+    when RestClient::SSLCertificateNotVerified
+      message = "Could not verify Signifyd's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://api.signifyd.com/v1 in your browser.)  If this problem persists, let us know at support@signifyd.com."
+    when SocketError
+      message = "Unexpected error communicating when trying to connect to Signifyd.  HINT: You may be seeing this message because your DNS is not working.  To check, try running 'host signifyd.com' from the command line."
+    else
+      message = "Unexpected error communicating with Signifyd.  If this problem persists, let us know at support@signifyd.com."
+    end
+    message += "\n\n(Network error: #{e.message})"
+    raise APIConnectionError.new(message)
+  end
+  
+  private
+  
   def self.configured?
     !!@@api_key
   end
-  
-  def self.request(method, url, params, api_key=nil)
-    api_key ||= @@api_key
-    raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key
-    
-    current_user_token = "#{api_key}:"
-    encoded_user_token = Base64.encode64(current_user_token)
-    
-    headers  = {
-      'Content-Type'  => "application/json",
-      'Authorization' => "Basic #{encoded_user_token}"
-    }
-    
-    # Post to the API with credentials
-    http          = Net::HTTP.new(Signifyd.api_base, 443)
-    http.use_ssl  = true
-        
-    store = OpenSSL::X509::Store.new
-    store.set_default_paths
-    store.add_cert(OpenSSL::X509::Certificate.new(File.read(@@ssl_bundle_path)))
-    
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    http.cert_store  = store
-    response = nil
-   
-    # Make the request
-    case method.to_s
-    when "get"
-    when "post"
-      response = http.post("#{Signifyd.api_version}#{url}?#{params}", params, headers)
-      return response
-    when "put"
-    when "delete"
-    end
-  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
