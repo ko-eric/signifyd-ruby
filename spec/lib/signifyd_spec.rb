@@ -4,8 +4,33 @@ describe Signifyd do
   let(:hash) { SignifydRequests.valid_case }
   let(:json) { JSON.dump(hash) }
   
+  context '.api_base=' do
+    context 'when setting the api_base' do
+      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      after { 
+        Signifyd.api_key = nil 
+        Signifyd.api_base = 'https://api.signifyd.com'
+      }
+      
+      subject { 
+        Signifyd.api_base = 'https://signifyd.com'
+      }
+      
+      it { should be_true }
+      it { should_not be_nil }
+      it {
+        expect(subject).to eq('https://signifyd.com')
+      }
+    end
+  end
+  
+  context '.api_base' do
+    context 'when calling for the api_base' do 
+    end
+  end
+  
   context '.api_version=' do
-    context 'when setting the api version' do
+    context 'when setting the api_version' do
       before { Signifyd.api_key = SIGNIFYD_API_KEY }
       after { 
         Signifyd.api_key = nil 
