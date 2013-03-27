@@ -1,11 +1,5 @@
 module Signifyd
-  class Case < Base
-    def initialize 
-      super
-    end
-    
-    def create
-      
-    end
+  class Case < Resource
+    include Signifyd::API::Create
   end
 end
