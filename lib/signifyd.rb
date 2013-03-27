@@ -92,16 +92,6 @@ module Signifyd
         :verify_ssl=> OpenSSL::SSL::VERIFY_NONE
       }
     end
-    
-    url = self.api_url(url) 
-    payload = JSON.dump(params)   
-    authkey = Base64.encode64(api_key)
-    headers = {
-      "Content-Length"  => payload.size,
-      "Content-Type"    => "application/json", 
-      "Authorization"   => "Basic #{authkey}",
-      'User-Agent'      => "Signifyd Ruby #{@@api_version.gsub('/', '')}"
-    }
 
     # Determine how to send the data and encode it based on what method we are sending
     case method.to_s
@@ -113,12 +103,22 @@ module Signifyd
       # we need to eject out the case_id from the params hash and append it to the url
       if params.has_key?(:case_id) || params.has_key?('case_id')
         case_id = params.delete(:case_id) 
+        params.reject! { |k| k == :case_id || k == 'case_id' }
         url << "/#{case_id}"
       end
-
     when 'delete' || :delete
 
     end
+    
+    url = self.api_url(url) 
+    payload = JSON.dump(params)   
+    authkey = Base64.encode64(api_key)
+    headers = {
+      "Content-Length"  => payload.size,
+      "Content-Type"    => "application/json", 
+      "Authorization"   => "Basic #{authkey}",
+      'User-Agent'      => "Signifyd Ruby #{@@api_version.gsub('/', '')}"
+    }
     
     opts = {
       :method => method,
@@ -128,12 +128,6 @@ module Signifyd
       :payload => payload,
       :timeout => 80
     }.merge(ssl_opts)
-    
-    puts ""
-    puts "----------------------------------------------"
-    puts opts.inspect
-    puts "----------------------------------------------"
-    puts ""
     
     begin
       response = execute_request(opts)
