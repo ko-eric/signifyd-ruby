@@ -134,6 +134,7 @@ module Signifyd
     
     rbody = response.body
     rcode = response.code
+    {code: rcode, body: rbody}
   end
   
   def self.execute_request(opts)
