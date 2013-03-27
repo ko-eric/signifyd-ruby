@@ -46,7 +46,7 @@ describe Signifyd do
       let(:json) { JSON.dump(hash) }
 
       before {
-        Signifyd.api_key = 'ZTd0s19vB9TDf4Q7Xozcefnxf'
+        Signifyd.api_key = SIGNIFYD_API_KEY
         
         stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
           with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
