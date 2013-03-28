@@ -1,8 +1,10 @@
 require 'simplecov'
+require 'coveralls'
+
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.start do
   add_group 'Signifyd', 'lib/'
 end
-require 'coveralls'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../lib/signifyd', __FILE__)
