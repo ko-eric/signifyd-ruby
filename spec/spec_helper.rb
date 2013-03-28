@@ -1,7 +1,7 @@
-require 'simplecov'
 require 'coveralls'
+Coveralls.wear!
 
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+require 'simplecov'
 SimpleCov.start do
   add_group 'Signifyd', 'lib/'
 end
