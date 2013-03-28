@@ -2,9 +2,7 @@ require 'simplecov'
 SimpleCov.start do
   add_group 'Signifyd', 'lib/'
 end
-
 require 'coveralls'
-Coveralls.wear! 'rails'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../lib/signifyd', __FILE__)
