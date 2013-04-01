@@ -14,7 +14,6 @@ $LOAD_PATH << File.join(PROJECT_ROOT, 'lib')
 
 RSpec.configure do |config|
   SIGNIFYD_API_KEY = '1000000000000000010001'
-    
   config.color_enabled = true
   config.tty = true
 end
