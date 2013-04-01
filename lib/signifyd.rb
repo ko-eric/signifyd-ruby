@@ -271,7 +271,7 @@ module Signifyd
     
     rbody = response.body
     rcode = response.code
-    {code: rcode, body: rbody}
+    {code: rcode, body: JSON.parse(rbody) }
   end
   
   # execute_request
