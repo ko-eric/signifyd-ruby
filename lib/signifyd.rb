@@ -15,6 +15,7 @@ require 'signifyd/util'
 require 'signifyd/signifyd_object'
 require 'signifyd/resource'
 require 'signifyd/api/create'
+require 'signifyd/api/list'
 require 'signifyd/api/update'
 require 'signifyd/case'
 
@@ -175,8 +176,9 @@ module Signifyd
   # @param[Req]: String[url] - '/cases'
   # @param[Req]: Hash[params] - {transaction...}
   # @param[Opt]: String[api_key] - 'YOUR-API-KEY'
+  # @param[Opt]: Hash[options] - optional parameters
   # @return: Hash - containing response code, body, and other data
-  def self.request(method, url, params, api_key=nil)
+  def self.request(method, url, params, api_key=nil, options={})
     api_key = api_key.nil? ? @@api_key : api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key 
     
