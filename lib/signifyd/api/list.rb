@@ -3,7 +3,7 @@ module Signifyd
     module List
       module ClassMethods
         def all(filters={}, api_key=nil)
-          Signifyd.request(:get, self.url, params, api_key, filters)
+          Signifyd.request(:get, self.url, {}, api_key, filters)
         end
       end
 

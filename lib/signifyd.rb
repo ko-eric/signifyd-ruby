@@ -61,7 +61,7 @@ module Signifyd
   # and supported request by Signifyd. This should be set to true and 
   # the library will use the Signifyd keys..not for now :/
   # @return: Boolean
-  @@verify_ssl_certs = true
+  @@verify_ssl_certs = false
   
   # test_mode
   # 
