@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Signifyd::Case do
   let(:hash) { SignifydRequests.valid_case }
   let(:json) { JSON.dump(hash) }
-  let(:investigation) { "{\"investigationId\":14065}" }
   let(:case_id) { (rand * 1000).ceil }
+  let(:investigation) { "{\"investigationId\":#{case_id}}" }
   
   context '.create' do    
     context 'when creating a case with a valid API key' do
@@ -27,12 +27,8 @@ describe Signifyd::Case do
         
         it { should be_true }
         it { should_not be_nil }
-        it {
-          expect(subject[:code]).to eq(201)
-        }
-        it {
-          expect(JSON.parse(subject[:body])[:investigationId]).to eq(JSON.parse(investigation)[:investigationId])
-        }
+        it { expect(subject[:code]).to eq(201) }
+        it { expect(JSON.parse(subject[:body])[:investigationId]).to eq(JSON.parse(investigation)[:investigationId]) }
       end
 
       context 'and passing incorrect or nil parameters' do
@@ -44,14 +40,12 @@ describe Signifyd::Case do
           Signifyd.api_key = nil
         }
 
-        it {
-          lambda { Signifyd::Case.create() }.should raise_error
-        }
+        it { lambda { Signifyd::Case.create() }.should raise_error }
       end
     end
     
     context 'when creating a case with an invalid API key' do
-      pending "need to check the response code on an invalid authentication"
+      it { lambda { Signifyd::Case.create(hash) }.should raise_error }
     end
   end
   
@@ -76,16 +70,20 @@ describe Signifyd::Case do
         
         it { should be_true }
         it { should_not be_nil }
-        it {
-          expect(subject[:code]).to eq(201)
-        }
-        it {
-          expect(JSON.parse(subject[:body])[:investigationId]).to eq(JSON.parse(investigation)[:investigationId])
-        }
+        it { expect(subject[:code]).to eq(201) }
+        it { expect(JSON.parse(subject[:body])[:investigationId]).to eq(JSON.parse(investigation)[:investigationId]) }
       end
       
       context 'and incorrect parameters have been passed' do
-        pending "need to test in correct params on update"
+        before {
+          Signifyd.api_key = SIGNIFYD_API_KEY
+        }
+        
+        after {
+          Signifyd.api_key = nil
+        }
+        
+        it { lambda { Signifyd::Case.update(case_id, {}) }.should raise_error }
       end
     end
   end

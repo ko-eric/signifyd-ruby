@@ -6,8 +6,13 @@ describe Signifyd do
   
   context '.verify_ssl_certs' do
     context 'when calling for the verify_ssl_certs' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
-      after { Signifyd.api_key = nil }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
       
       subject {
         Signifyd.verify_ssl_certs = true
@@ -15,15 +20,16 @@ describe Signifyd do
       
       it { should be_true }
       it { should_not be_nil }
-      it {
-        expect(subject).to eq(true)
-      }
+      it { expect(subject).to eq(true) }
     end
   end
   
   context '.verify_ssl_certs=' do
     context 'when setting the verify_ssl_certs' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
       after { 
         Signifyd.api_key = nil 
         Signifyd.verify_ssl_certs = true
@@ -35,15 +41,16 @@ describe Signifyd do
       
       it { should be_false }
       it { should_not be_nil }
-      it {
-        expect(subject).to eq(false)
-      }
+      it { expect(subject).to eq(false) }
     end
   end
   
   context '.api_base=' do
     context 'when setting the api_base' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
       after { 
         Signifyd.api_key = nil 
         Signifyd.api_base = 'https://api.signifyd.com'
@@ -55,16 +62,19 @@ describe Signifyd do
       
       it { should be_true }
       it { should_not be_nil }
-      it {
-        expect(subject).to eq('https://signifyd.com')
-      }
+      it { expect(subject).to eq('https://signifyd.com') }
     end
   end
   
   context '.api_base' do
     context 'when calling for the api_base' do 
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
-      after { Signifyd.api_key = nil }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
       
       subject {
         Signifyd.api_base
@@ -72,15 +82,16 @@ describe Signifyd do
       
       it { should be_true }
       it { should_not be_nil }
-      it {
-        expect(subject).to eq('https://api.signifyd.com')
-      }
+      it { expect(subject).to eq('https://api.signifyd.com') }
     end
   end
   
   context '.api_version=' do
     context 'when setting the api_version' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
       after { 
         Signifyd.api_key = nil 
         Signifyd.api_version = '/v1' 
@@ -100,8 +111,13 @@ describe Signifyd do
   
   context '.api_version' do    
     context 'when calling for the api_version' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
-      after { Signifyd.api_key = nil }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
       
       subject {
         Signifyd.api_version
@@ -137,8 +153,13 @@ describe Signifyd do
     end
     
     context 'when setting a valid API key' do
-      before { Signifyd.api_key = SIGNIFYD_API_KEY }
-      after { Signifyd.api_key = nil }
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
 
       subject {
         Signifyd.configured?
