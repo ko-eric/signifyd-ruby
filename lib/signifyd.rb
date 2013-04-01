@@ -25,60 +25,157 @@ require 'signifyd/errors/invalid_request_error'
 require 'signifyd/errors/not_implemented_error'
 
 module Signifyd
+  # ssl_bundle_path 
+  # 
+  # Path to hold Signifyd.com's certificate
+  # @return: String[path to certificate file]
   @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/signifyd.crt')
+  
+  # api_key
+  # 
+  # Default point for where the application will hold the API_KEY
+  # for the current instance. If not set, must be passed in all calls
+  # as last parameter.
+  # @return String[unique identifier]
   @@api_key = nil
+  
+  # api_base
+  # 
+  # Root url where the Signifyd API endpoints will live. This can be
+  # changed by setting Signifyd.test_mode = true and will default to
+  # staging env.
+  # @return: String[url to Signifyd's API]
   @@api_base = 'https://api.signifyd.com'
+  
+  # api_version
+  # 
+  # Version right now will be the url structure, might change later.
+  # For now this is ok.
+  # @return: String[url path of our current api version]
   @@api_version = '/v1'
-  @@verify_ssl_certs = false
+  
+  # verify_ssl_certs
+  # 
+  # When this is set to false, any request made will not be a verfied 
+  # and supported request by Signifyd. This should be set to true and 
+  # the library will use the Signifyd keys.
+  # @return: Boolean
+  @@verify_ssl_certs = true
+  
+  # test_mode
+  # 
+  # When set to true, will default to Signifyd's staging environment. 
+  # This as well should always be set to true.
+  # @return: Boolean
   @@test_mode = false
   
+  # api_url
+  # 
+  # This method is used to set the full url that the request will be made
+  # to. Ideally, pass in the version of the API and then the method that
+  # will be requested.
+  # @return: String[url for request to be made]
   def self.api_url(url='')
     @@api_base + url
   end
 
+  # api_key=
+  # 
+  # Setter method to set the API key. Set into class variable and used
+  # globally on all calls made.
+  # @return: String[api key]
   def self.api_key=(api_key)
     @@api_key = api_key
   end
 
+  # api_key
+  # 
+  # Getter method for the API key that has been set by the application. 
+  # @return: String[api key]
   def self.api_key
     @@api_key
   end
   
+  # api_version=
+  # 
+  # Setter method to set the API version. Set into class variable and used
+  # globally on all calls made.
+  # @return: String[api url version]
   def self.api_version=(api_version)
     @@api_version = api_version
   end
 
+  # api_version
+  # 
+  # Getter method for the API version that has been set by the application.
+  # @return: String[api url version]
   def self.api_version
     @@api_version
   end
 
+  # api_base=
+  # 
+  # Setter method to set the API url base. Set into class variable and used
+  # globally on all calls made.
+  # @return: String[api base]
   def self.api_base=(api_base)
     @@api_base = api_base
   end
 
+  # api_base
+  # 
+  # Getter method for the API base that has been set by the application.
+  # @return: String[api base]
   def self.api_base
     @@api_base
   end
 
+  # verify_ssl_certs=
+  # 
+  # Setter method to set the API verify_ssl_certs. Set into class variable and
+  # used globally on all calls made.
+  # @return: Boolean
   def self.verify_ssl_certs=(verify)
     @@verify_ssl_certs = verify
   end
 
+  # verify_ssl_certs
+  # 
+  # Getter method for the API verify_ssl_certs that has been set by the application.
+  # @return: Boolean
   def self.verify_ssl_certs
     @@verify_ssl_certs
   end
   
+  # test_mode=
+  # 
+  # Setter method to set the API test_mode. Set into class variable and used 
+  # globally on all calls made.
+  # @return: Boolean
+  def self.test_mode=(test_mode)
+    Signifyd.api_base = 'https://staging.signifyd.com' if test_mode 
+    @@test_mode = test_mode
+  end
+  
+  # test_mode
+  # 
+  # Getter method for the API test_mode that has been set by the application.
+  # @return: Boolean
   def self.test_mode
     @@test_mode
   end
   
-  def self.test_mode=(test_mode)
-    @@test_mode = test_mode
-    if test_mode 
-      Signifyd.api_base = 'https://api-staging.signifyd.com'
-    end
-  end
-  
+  # request
+  # 
+  # Global method that will use RestClient to make all requests. Everything else
+  # is set between Signifyd.{setter} methods. This method is called from other 
+  # methods so direct calls won't be necessary.
+  #
+  # @param[Req]: String[method] - :get, :post, :put, :delete
+  # @param[Req]: String[url] - '/cases'
+  # @param[Req]: Hash[params] - {transaction...}
+  # @param[Opt]: String[api_key] - 'YOUR-API-KEY'
+  # @return: Hash - containing response code, body, and other data
   def self.request(method, url, params, api_key=nil)
     api_key = api_key.nil? ? @@api_key : api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key 
@@ -97,7 +194,8 @@ module Signifyd
     if @@verify_ssl_certs
       ssl_opts = {
         :verify_ssl => OpenSSL::SSL::VERIFY_PEER,
-        :ssl_ca_file => @@ssl_bundle_path
+        :ssl_ca_file => @@ssl_bundle_path,
+        :ssl_client_cert  =>  OpenSSL::X509::Certificate.new(@@ssl_bundle_path)
       }
     else
       ssl_opts = {
@@ -105,7 +203,8 @@ module Signifyd
       }
     end
 
-    # Determine how to send the data and encode it based on what method we are sending
+    # Determine how to send the data and encode it based on what method we are sending. Some
+    # are necessary, some are not. 
     case method.to_s
     when 'get'  || :get
 
@@ -122,9 +221,16 @@ module Signifyd
 
     end
     
+    # Create the full url here
     url = self.api_url(url) 
+    
+    # Parse into valid json
     payload = JSON.dump(params)   
+    
+    # Convert the key
     authkey = Base64.encode64(api_key)
+    
+    # Headers must contain these keys
     headers = {
       "Content-Length"  => payload.size,
       "Content-Type"    => "application/json", 
@@ -132,6 +238,7 @@ module Signifyd
       'User-Agent'      => "Signifyd Ruby #{@@api_version.gsub('/', '')}"
     }
     
+    # All necessary options must be set
     opts = {
       :method => method,
       :url => url,
@@ -141,6 +248,7 @@ module Signifyd
       :timeout => 80
     }.merge(ssl_opts)
     
+    # Make the request
     begin
       response = execute_request(opts)
     rescue SocketError => e

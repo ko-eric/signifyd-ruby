@@ -32,7 +32,8 @@ Signifyd.api_key = 'YOUR-API-KEY'
 Otherwise include and set this in an initialization block of your Sinatra or Ruby application. This will persist throughout the lifetime of your application. If you do not set your API key globally like the example above. You can pass your key into any method and it will authenticate on each single request as follows:
 
 ```ruby
-request = Signifyd::Case.create(transaction, 'YOUR-API-KEY')
+create = Signifyd::Case.create(transaction_hash, 'YOUR-API-KEY')
+update = Signifyd::Case.update(case_id, attributes_hash, 'YOUR-API-KEY')
 ```
 
 ## Errors
