@@ -193,12 +193,12 @@ module Signifyd
     
     if @@verify_ssl_certs
       ssl_opts = {
-        :verify_ssl => OpenSSL::SSL::VERIFY_PEER,
+        :verify_ssl  => OpenSSL::SSL::VERIFY_PEER,
         :ssl_ca_file => @@ssl_bundle_path
       }
     else
       ssl_opts = {
-        :verify_ssl=> OpenSSL::SSL::VERIFY_NONE
+        :verify_ssl => OpenSSL::SSL::VERIFY_NONE
       }
     end
 
@@ -274,10 +274,19 @@ module Signifyd
     {code: rcode, body: rbody}
   end
   
+  # execute_request
+  #
+  # Handles the request, pass in opts hash, RestClient makes the call.
+  # @param: Hash[opts] - Configured options from Signifyd.request method.
+  # @return: RestClient::Request - the result of the request.
   def self.execute_request(opts)
     RestClient::Request.execute(opts)
   end
   
+  # handle_restclient_error
+  #
+  # @param: RestClient[error] - could be many different types of errors.
+  # @return: String[error message]
   def self.handle_restclient_error(e)
     case e
     when RestClient::ServerBrokeConnection, RestClient::RequestTimeout
@@ -295,6 +304,10 @@ module Signifyd
   
   private
   
+  # configured?
+  # 
+  # Check to see if the API key has been set
+  # @return: Boolean
   def self.configured?
     !!@@api_key
   end
