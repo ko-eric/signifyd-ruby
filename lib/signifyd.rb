@@ -58,7 +58,7 @@ module Signifyd
   # 
   # When this is set to false, any request made will not be a verfied 
   # and supported request by Signifyd. This should be set to true and 
-  # the library will use the Signifyd keys.
+  # the library will use the Signifyd keys..not for now :/
   # @return: Boolean
   @@verify_ssl_certs = true
   
@@ -187,15 +187,14 @@ module Signifyd
       :lang => 'ruby',
       :lang_version => lang_version,
       :platform => RUBY_PLATFORM,
-      :publisher => 'stripe',
+      :publisher => 'signifyd',
       :uname => uname
     }
     
     if @@verify_ssl_certs
       ssl_opts = {
         :verify_ssl => OpenSSL::SSL::VERIFY_PEER,
-        :ssl_ca_file => @@ssl_bundle_path,
-        :ssl_client_cert  =>  OpenSSL::X509::Certificate.new(@@ssl_bundle_path)
+        :ssl_ca_file => @@ssl_bundle_path
       }
     else
       ssl_opts = {
