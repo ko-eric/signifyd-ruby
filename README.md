@@ -150,8 +150,22 @@ transaction = {
 Now create your case with the given hashed data:
 
 ```ruby
-request = Signifyd::Case.create(transaction, {})
+> Signifyd::Case.create(transaction, {})
+=> {code: 201, body: {investigationId: 48573}}
 ```
+	
+All methods will be restful and will respond to a CRUD interface. `/cases` accepts GET requests to return all your cases, POST, with a json body to create a case, PUT, with a case_id to update a case and DELETE to remove an investigation.
+
+Update a case. Well use avs and cvv code to show an update:
+
+```ruby
+> data = {'purchase' => {}}
+> data['purchase']['avsResponseCode'] = 'Y'
+> data['purchase']['cvvResponseCode'] = 'M'
+> Signifyd::Case.update(48573, JSON.dump(data), {})
+=> {code: 200, body: {investigationBody}}
+```
+
 	
 Upon successful case post, this will return a response that contains data on whether or not this was successful. It will look something like this:
 
