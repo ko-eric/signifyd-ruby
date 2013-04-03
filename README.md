@@ -159,9 +159,7 @@ All methods will be restful and will respond to a CRUD interface. `/cases` accep
 Update a case. Well use avs and cvv code to show an update:
 
 ```ruby
-> data = {'purchase' => {}}
-> data['purchase']['avsResponseCode'] = 'Y'
-> data['purchase']['cvvResponseCode'] = 'M'
+> data = {'purchase' => {'avsResponseCode' => 'Y', 'cvvResponseCode' => 'M'}}
 > Signifyd::Case.update(48573, JSON.dump(data), {})
 => {code: 200, body: {investigationBody}}
 ```
