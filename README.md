@@ -81,7 +81,7 @@ transaction = {
                            "itemPrice" => "38.57",
                           "itemWeight" => 4
                     }
-        ]
+                ]
     },
     "recipient" => {
                  "fullName" => "Greyson Yundt",
