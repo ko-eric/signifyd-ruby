@@ -155,8 +155,6 @@ List cases:
 => {code: 200, body: []}
 ```
 
-
-
 Create a case: 
 
 ```ruby
