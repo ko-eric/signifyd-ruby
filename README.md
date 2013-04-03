@@ -149,6 +149,14 @@ transaction = {
 }
 ```
 
+List cases:
+```ruby
+> Signifyd::Case.all({count: 100, offset: 0}, {})
+=> {code: 200, body: []}
+```
+
+
+
 Create a case: 
 
 ```ruby
