@@ -66,6 +66,8 @@ To create a case, align all hash attributes to match our [documentation](https:/
 transaction = {
     "attackMethod" => "STOLEN_CC",
         "purchase" => {
+        "avsResponseCode"  => "Y",
+        "cvvResponseCode"  => "M",
         "browserIpAddress" => "50.141.59.109",
                "createdAt" => "2013-02-21T18:37:35-05:00",
                 "currency" => "CAD",
