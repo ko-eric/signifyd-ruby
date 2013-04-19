@@ -33,13 +33,13 @@ Signifyd.api_key = 'YOUR-API-KEY'
 Otherwise include and set this in an initialization block of your Sinatra or Ruby application. This will persist throughout the lifetime of your application. If you do not set your API key globally like the example above. You can pass your key into any method and it will authenticate on each single request as follows:
 
 ```ruby
-# ***ONLY do this if you have not set your API key using the global 'Signifyd.api_key' setter
+# ***ONLY do this if you have not set your API key using the global 'Signifyd.api_key=' setter
 create = Signifyd::Case.create(transaction_hash, 'YOUR-API-KEY')
 update = Signifyd::Case.update(case_id, attributes_hash, 'YOUR-API-KEY')
 ```
 
 ## Errors
-You can catch your erros based on these sub classes. 
+You can catch your errors based on these sub classes. 
 
 ```ruby
 begin
@@ -53,15 +53,13 @@ rescue => e
 end
 ```
 
-Upon a successful case/investigation creation or any endpoint called. Signifyd will return an [HTTP status code](http://httpstatus.es/) that makes sense for the resource called and data manipulated for the restfull endpoint.
+Upon a successful case/investigation creation or any endpoint called. Signifyd will return an [HTTP status code](http://httpstatus.es/) that makes sense for the resource called and data manipulated for the restful endpoint.
 
 ## Methods
 Currently Signifyd supports the following methods for investigations against your transactions. The Cases endpoint is where you will start. Encode your transaction to match the JSON we require for a successful creation and make your request.
 
 ### Cases
-To create a case, follow the instructions below. Please read the [documentation](https://www.signifyd.com/docs/api) under your account. It is imperative that you follow the guides correctly and encode all pieces of data with the correct format and data types otherwise this will effect the score we rank your transaction at. 
-
-To create a case, align all hash attributes to match our [documentation](https://www.signifyd.com/docs/api) and then call the create method. We will do our best to parse through your request before actually making it to our server. Please follow the [documentation](https://www.signifyd.com/docs/api) verbatim. 
+To create a case, follow the instructions below. Please read the [documentation](https://www.signifyd.com/docs/api) under your account. It is imperative that you follow the guides correctly and encode all pieces of data with the correct format and data types otherwise this will effect the score of your transaction's investigation. 
 
 ```ruby
 transaction = {
