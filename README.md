@@ -23,7 +23,7 @@ For Rails applications, include in Gemfile.
 gem 'signifyd'
 ```
 
-Now that you have installed the gem. Go ahead and configured your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
+Now that you have installed the gem. Go ahead and configure your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
 
 ```ruby
 require 'signifyd'
