@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/signifyd/signifyd-ruby/badge.png?branch=master)](https://coveralls.io/r/signifyd/signifyd-ruby)
 
 ## Introduction
-This is the official ruby library for the Signifyd API. Install the gem, get your API key from the Signifyd portal at [Signifyd](https://signifyd.com) and start posting your transactions for fraud detection. Every transaction you post to the API will creaet a new investigation. 
+This is the official ruby library for the Signifyd API rubygem. Install the gem, get your API key from the Signifyd portal at [Signifyd](https://signifyd.com) and start posting your transactions for fraud detection/scoring. Every transaction you post to the API, it will create a new investigation. 
 
 Before using this library, be sure to look at our third party authentications you can add to your account. Signifyd allows you to connect your Stripe or Shopify store/account and it will automatically create investigations for your transactions. 
 
