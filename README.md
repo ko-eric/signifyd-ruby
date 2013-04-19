@@ -8,7 +8,7 @@
 ## Introduction
 This is the official ruby library for the Signifyd API rubygem. Install the gem, get your API key from the Signifyd portal at [Signifyd](https://signifyd.com) and start posting your transactions for fraud detection/scoring. Every transaction you post to the API, it will create a new investigation. 
 
-Before using this library, be sure to look at our third party authentications you can add to your account. Signifyd allows you to connect your Stripe or Shopify store/account and it will automatically create investigations for your transactions. 
+Before using this library, be sure to look at our third party authentications you can add to your account. Signifyd allows you to connect your Stripe or Shopify store/account and it will automatically create investigations for your transactions as they come in realtime. 
 
 Please read the [documentation](https://www.signifyd.com/docs/api) for creating a case. Even though you are using the ruby library we have created, you must still adhere to the data type and encoding of the data to match what we expect a correct post will be.
 
