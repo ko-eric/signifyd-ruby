@@ -170,5 +170,3 @@ Update a case:
 ```
 
 All methods will be restful and will respond to a CRUD interface. `/cases` accepts GET requests to return all your cases, POST, with a json body to create a case, PUT, with a case_id to update a case and DELETE to remove an investigation.
-
-
