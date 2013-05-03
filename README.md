@@ -13,7 +13,7 @@ Before using this library, be sure to look at our third party authentications yo
 Please read the [documentation](https://www.signifyd.com/docs/api) for creating a case. Even though you are using the ruby library we have created, you must still adhere to the data type and encoding of the data to match what we expect a correct post will be.
 
 ## Installation 
-The installation can be used for a stand alone ruby application, Sinatra or a Rails application.
+The gem can be used for a stand alone ruby application, Sinatra or a Rails application.
 
 	$ gem install signifyd
 	

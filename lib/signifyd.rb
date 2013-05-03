@@ -75,6 +75,7 @@ module Signifyd
   # This method is used to set the full url that the request will be made
   # to. Ideally, pass in the version of the API and then the method that
   # will be requested.
+    # An example retrun would be: 'https://signifyd.com/v1/cases
   # @return: String[url for request to be made]
   def self.api_url(url='')
     @@api_base + url
