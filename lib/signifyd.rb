@@ -21,6 +21,7 @@ require 'signifyd/case'
 
 # Internal Dependencies
 require 'signifyd/errors/signifyd_error'
+require 'signifyd/errors/api_error'
 require 'signifyd/errors/authentication_error'
 require 'signifyd/errors/invalid_request_error'
 require 'signifyd/errors/not_implemented_error'
@@ -312,13 +313,46 @@ module Signifyd
     raise APIConnectionError.new(message)
   end
   
-  private
-  
-  # configured?
-  # 
-  # Check to see if the API key has been set
-  # @return: Boolean
-  def self.configured?
-    !!@@api_key
+  # handle_api_error
+  #
+  # @param: String
+  # @param: String
+  def self.handle_api_error(rcode, rbody)
+    error = {}
+    case rcode
+    when 400, 404
+      error[:message] = "Invalid request"
+      error[:param]  = ""
+      raise invalid_request_error error, rcode, rbody
+    when 401
+      error[:message] = "Authentication error"
+      error[:param]  = ""
+      raise authentication_error error, rcode, rbody
+    else
+      error[:message] = "API error"
+      error[:param]  = ""
+      raise api_error error, rcode, rbody
+    end
   end
+  
+  def self.invalid_request_error(error, rcode, rbody)
+    InvalidRequestError.new(error[:message], error[:param], rcode, rbody, error_obj)
+  end
+
+  def self.authentication_error(error, rcode, rbody)
+    AuthenticationError.new(error[:message], error[:param], rcode, rbody)
+  end
+  
+  def self.general_api_error(rcode, rbody)
+    APIError.new("Invalid response object from API: #{rbody.inspect} (HTTP response code was #{rcode})", rcode, rbody)
+  end
+  
+  private  
+    # configured?
+    # 
+    # Check to see if the API key has been set
+    # @return: Boolean
+    def self.configured?
+      !!@@api_key
+    end
 end
