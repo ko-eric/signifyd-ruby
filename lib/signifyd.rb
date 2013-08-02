@@ -30,7 +30,7 @@ module Signifyd
   # 
   # Path to hold Signifyd.com's certificate
   # @return: String[path to certificate file]
-  @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/signifyd.crt')
+  @@ssl_bundle_path = File.join(File.dirname(__FILE__), 'data/ca-certificates.crt')
   
   # api_key
   # 
@@ -61,7 +61,7 @@ module Signifyd
   # and supported request by Signifyd. This should be set to true and 
   # the library will use the Signifyd keys..not for now :/
   # @return: Boolean
-  @@verify_ssl_certs = false
+  @@verify_ssl_certs = true
   
   # test_mode
   # 
@@ -69,6 +69,13 @@ module Signifyd
   # This as well should always be set to true.
   # @return: Boolean
   @@test_mode = false
+  
+  # ssl_bundle_path
+  # 
+  # Returns the path to the certificate store location
+  def self.ssl_bundle_path
+    @@ssl_bundle_path
+  end
   
   # api_url
   # 
@@ -224,13 +231,13 @@ module Signifyd
     end
     
     # Create the full url here
-    url = self.api_url(url) 
+    url = self.api_url(url)   
     
     # Parse into valid json
     payload = JSON.dump(params)   
     
     # Convert the key
-    authkey = Base64.encode64(api_key)
+    authkey = api_key == {} || api_key == nil ? '' : Base64.encode64(api_key)
     
     # Headers must contain these keys
     headers = {
@@ -274,7 +281,7 @@ module Signifyd
     
     rbody = response.body
     rcode = response.code
-    {code: rcode, body: JSON.parse(rbody) }
+    return {code: rcode, body: JSON.parse(rbody)}
   end
   
   # execute_request
