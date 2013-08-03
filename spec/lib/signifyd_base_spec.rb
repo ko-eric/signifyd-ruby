@@ -86,6 +86,87 @@ describe Signifyd do
     end
   end
   
+  context '.ssl_bundle_path' do
+    context 'when calling for the ssl_bundle_path' do 
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
+      
+      subject {
+        Signifyd.ssl_bundle_path
+      }
+      
+      it { should be_true }
+      it { should_not be_nil }
+      it { expect(subject).to include('data/ca-certificates.crt') }
+    end
+  end
+  
+  context '.verify_ssl_certs' do
+    context 'when calling for the verify_ssl_certs' do 
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
+      
+      subject {
+        Signifyd.verify_ssl_certs
+      }
+      
+      it { should be_true }
+      it { should_not be_nil }
+      it { expect(subject).to be_true }
+    end
+  end
+  
+  context '.test_mode' do
+    context 'when calling for the test_mode' do 
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
+      
+      subject {
+        Signifyd.test_mode
+      }
+      
+      it { should be_false }
+      it { should_not be_nil }
+      it { expect(subject).to be_false }
+    end
+  end
+  
+  context '.test_mode=' do
+    context 'when setting the test_mode' do
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+        Signifyd.api_version = '/v1' 
+      }
+      
+      subject { 
+        Signifyd.test_mode = false 
+      }
+      
+      it { should be_false }
+      it { should_not be_nil }
+      it { expect(subject).to be_false }
+    end
+  end
+  
   context '.api_version=' do
     context 'when setting the api_version' do
       before { 
@@ -191,5 +272,18 @@ describe Signifyd do
       it { should_not be_nil }
       it { should be_true }
     end
+    
+    context 'with a non valid or nil API key' do
+      before {
+        Signifyd.api_key = nil
+      }
+      
+      subject {
+        Signifyd.request(:post, '/v1/cases', hash)
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
   end
 end
