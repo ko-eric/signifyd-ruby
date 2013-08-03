@@ -285,5 +285,177 @@ describe Signifyd do
       it { lambda { subject }.should raise_error }
     end
     
+    context 'when VERIFY_NONE is set to false' do
+      before {
+        Signifyd.api_key = SIGNIFYD_API_KEY
+        Signifyd.verify_ssl_certs = false
+        
+        stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
+          with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+          to_return(:status => 201, :body => "{\"investigationId\":14065}", :headers => {})
+      }
+      
+      after {
+        Signifyd.api_key = nil
+        Signifyd.verify_ssl_certs = true
+      }
+      
+      subject {
+        Signifyd.request(:post, '/v1/cases', hash)
+      }
+      
+      it { should_not be_nil }
+      it { should be_true }
+    end
+    
+    context 'when there is an authentication on invalid request error' do
+      context 'and returns a 400' do
+        before {
+          Signifyd.api_key = nil
+
+          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+            to_return(:status => 400, :body => "{\"investigationId\":14065}", :headers => {})
+        }
+
+        subject {
+          Signifyd.request(:post, '/v1/cases', hash)
+        }
+
+        it { lambda { subject }.should raise_error }
+      end
+      
+      context 'and returns a 404' do
+        before {
+          Signifyd.api_key = nil
+
+          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+            to_return(:status => 404, :body => "{\"investigationId\":14065}", :headers => {})
+        }
+
+        subject {
+          Signifyd.request(:post, '/v1/cases', hash)
+        }
+
+        it { lambda { subject }.should raise_error }
+      end
+    end
+  end
+  
+  context '.handle_restclient_error' do
+    before {
+      Signifyd.api_key = nil
+    }
+    
+    context 'when RestClient::ServerBrokeConnection OR RestClient::RequestTimeout' do
+      subject {
+        Signifyd.handle_restclient_error RestClient::ServerBrokeConnection.new
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
+    context 'when RestClient::SSLCertificateNotVerified' do
+      subject {
+        Signifyd.handle_restclient_error RestClient::SSLCertificateNotVerified.new('error')
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
+    context 'when SocketError' do
+      subject {
+        Signifyd.handle_restclient_error SocketError.new
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
+    context 'when StandardError' do
+      subject {
+        Signifyd.handle_restclient_error StandardError.new
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+  end
+  
+  context '.handle_api_error' do
+    before {
+      Signifyd.api_key = nil
+    }
+    
+    context 'when 400 or 404' do
+      subject {
+        Signifyd.handle_api_error(400, "{\"error\":true}")
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
+    context 'when 401' do
+      subject {
+        Signifyd.handle_api_error(401, "{\"error\":true}")
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+    
+    context 'when 500' do
+      subject {
+        Signifyd.handle_api_error(500, "{\"error\":true}")
+      }
+      
+      it { lambda { subject }.should raise_error }
+    end
+  end
+  
+  context '.invalid_request_error' do
+    before {
+      @error = {}
+      @error[:message] = "Invalid request error"
+      @error[:param] = "Left out json body"
+      @rcode = 400
+      @rbody = "{\"error\":true}"
+    }
+    
+    subject {
+      Signifyd.invalid_request_error @error, @rcode, @rbody
+    }
+    
+    it { lambda { subject }.should raise_error }
+  end
+  
+  context '.authentication_error' do
+    before {
+      @error = {}
+      @error[:message] = "Authentication Error"
+      @error[:param] = "Left out api key"
+      @rcode = 404
+      @rbody = "{\"error\":true}"
+    }
+    
+    subject {
+      Signifyd.authentication_error @error, @rcode, @rbody
+    }
+    
+    it { lambda { subject }.should raise_error }
+  end
+  
+  context '.general_api_error' do
+    before {
+      @error = {}
+      @error[:message] = "Api Error"
+      @error[:param] = "Left out api key"
+      @rcode = 404
+      @rbody = "{\"error\":true}"
+    }
+    
+    subject {
+      Signifyd.general_api_error @rcode, @rbody
+    }
+    
+    it { lambda { subject }.should raise_error }
   end
 end

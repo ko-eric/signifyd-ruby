@@ -336,15 +336,15 @@ module Signifyd
   end
   
   def self.invalid_request_error(error, rcode, rbody)
-    InvalidRequestError.new(error[:message], error[:param], rcode, rbody, error_obj)
+    raise InvalidRequestError.new(error[:message], error[:param], rcode, rbody, error_obj)
   end
 
   def self.authentication_error(error, rcode, rbody)
-    AuthenticationError.new(error[:message], error[:param], rcode, rbody)
+    raise AuthenticationError.new(error[:message], error[:param], rcode, rbody)
   end
   
   def self.general_api_error(rcode, rbody)
-    APIError.new("Invalid response object from API: #{rbody.inspect} (HTTP response code was #{rcode})", rcode, rbody)
+    raise APIError.new("Invalid response object from API: #{rbody.inspect} (HTTP response code was #{rcode})", rcode, rbody)
   end
   
   private  
