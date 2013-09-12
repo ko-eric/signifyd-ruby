@@ -37,7 +37,6 @@ Otherwise include and set this in an initialization block of your Sinatra or Rub
 create = Signifyd::Case.create(transaction_hash, 'YOUR-API-KEY')
 update = Signifyd::Case.update(case_id, attributes_hash, 'YOUR-API-KEY')
 ```
-
 ## Errors
 You can catch your errors based on these sub classes. 
 
