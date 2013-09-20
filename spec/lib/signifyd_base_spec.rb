@@ -167,6 +167,48 @@ describe Signifyd do
     end
   end
   
+  
+  context '.local_mode' do
+    context 'when calling for the local_mode' do 
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+      }
+      
+      subject {
+        Signifyd.local_mode
+      }
+      
+      it { should be_false }
+      it { should_not be_nil }
+      it { expect(subject).to be_false }
+    end
+  end
+  
+  context '.local_mode=' do
+    context 'when setting the local_mode' do
+      before { 
+        Signifyd.api_key = SIGNIFYD_API_KEY 
+      }
+      
+      after { 
+        Signifyd.api_key = nil 
+        Signifyd.api_version = '/v2' 
+      }
+      
+      subject { 
+        Signifyd.local_mode = false 
+      }
+      
+      it { should be_false }
+      it { should_not be_nil }
+      it { expect(subject).to be_false }
+    end
+  end
+  
   context '.api_version=' do
     context 'when setting the api_version' do
       before { 

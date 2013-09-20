@@ -67,9 +67,16 @@ module Signifyd
   # test_mode
   # 
   # When set to true, will default to Signifyd's staging environment. 
-  # This as well should always be set to true.
+  # This as well should always be set to false.
   # @return: Boolean
   @@test_mode = false
+  
+  # local_mode
+  # 
+  # When set to true, will default to a local environment of localhost:9000. 
+  # This as well should always be set to false.
+  # @return: Boolean
+  @@local_mode = false
   
   # ssl_bundle_path
   # 
@@ -163,7 +170,7 @@ module Signifyd
   # globally on all calls made.
   # @return: Boolean
   def self.test_mode=(test_mode)
-    Signifyd.api_base = 'https://staging.signifyd.com' if test_mode 
+    Signifyd.api_base = 'https://staging.signifyd.com' if test_mode && !self.local_mode
     @@test_mode = test_mode
   end
   
@@ -173,6 +180,24 @@ module Signifyd
   # @return: Boolean
   def self.test_mode
     @@test_mode
+  end
+  
+  # local_mode=
+  # 
+  # Setter method to set the API local_mode. Set into class variable and used 
+  # globally on all calls made.
+  # @return: Boolean
+  def self.local_mode=(local_mode)
+    Signifyd.api_base = 'http://localhost:9000' if local_mode && !self.test_mode
+    @@local_mode = local_mode
+  end
+  
+  # local_mode
+  # 
+  # Getter method for the API test_mode that has been set by the application.
+  # @return: Boolean
+  def self.local_mode
+    @@local_mode
   end
   
   # request
