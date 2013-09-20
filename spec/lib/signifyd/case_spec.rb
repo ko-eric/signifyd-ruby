@@ -12,8 +12,8 @@ describe Signifyd::Case do
         before {
           Signifyd.api_key = SIGNIFYD_API_KEY
           
-          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
-            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
             to_return(:status => 201, :body => investigation, :headers => {})
         }
 
@@ -55,8 +55,8 @@ describe Signifyd::Case do
         before {
           Signifyd.api_key = SIGNIFYD_API_KEY
           
-          stub_request(:put, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases/#{case_id}").
-            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+          stub_request(:put, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases/#{case_id}").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
             to_return(:status => 200, :body => investigation, :headers => {})
         }
 

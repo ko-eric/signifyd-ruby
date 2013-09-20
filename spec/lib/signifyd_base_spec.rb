@@ -154,7 +154,7 @@ describe Signifyd do
       
       after { 
         Signifyd.api_key = nil 
-        Signifyd.api_version = '/v1' 
+        Signifyd.api_version = '/v2' 
       }
       
       subject { 
@@ -175,7 +175,7 @@ describe Signifyd do
       
       after { 
         Signifyd.api_key = nil 
-        Signifyd.api_version = '/v1' 
+        Signifyd.api_version = '/v2' 
       }
       
       subject { 
@@ -207,7 +207,7 @@ describe Signifyd do
       it { should be_true }
       it { should_not be_nil }
       it {
-        expect(subject).to eq('/v1')
+        expect(subject).to eq('/v2')
       }
     end
   end
@@ -256,8 +256,8 @@ describe Signifyd do
       before {
         Signifyd.api_key = SIGNIFYD_API_KEY
         
-        stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
-          with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+        stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases").
+          with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
           to_return(:status => 201, :body => "{\"investigationId\":14065}", :headers => {})
       }
     
@@ -266,7 +266,7 @@ describe Signifyd do
       }
       
       subject {
-        Signifyd.request(:post, '/v1/cases', hash)
+        Signifyd.request(:post, '/v2/cases', hash)
       }
       
       it { should_not be_nil }
@@ -279,7 +279,7 @@ describe Signifyd do
       }
       
       subject {
-        Signifyd.request(:post, '/v1/cases', hash)
+        Signifyd.request(:post, '/v2/cases', hash)
       }
       
       it { lambda { subject }.should raise_error }
@@ -290,8 +290,8 @@ describe Signifyd do
         Signifyd.api_key = SIGNIFYD_API_KEY
         Signifyd.verify_ssl_certs = false
         
-        stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
-          with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+        stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases").
+          with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
           to_return(:status => 201, :body => "{\"investigationId\":14065}", :headers => {})
       }
       
@@ -301,7 +301,7 @@ describe Signifyd do
       }
       
       subject {
-        Signifyd.request(:post, '/v1/cases', hash)
+        Signifyd.request(:post, '/v2/cases', hash)
       }
       
       it { should_not be_nil }
@@ -313,13 +313,13 @@ describe Signifyd do
         before {
           Signifyd.api_key = nil
 
-          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
-            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
             to_return(:status => 400, :body => "{\"investigationId\":14065}", :headers => {})
         }
 
         subject {
-          Signifyd.request(:post, '/v1/cases', hash)
+          Signifyd.request(:post, '/v2/cases', hash)
         }
 
         it { lambda { subject }.should raise_error }
@@ -329,13 +329,13 @@ describe Signifyd do
         before {
           Signifyd.api_key = nil
 
-          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v1/cases").
-            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v1'}).
+          stub_request(:post, "https://#{Signifyd.api_key}@api.signifyd.com/v2/cases").
+            with(:body => json, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>json.size, 'Content-Type'=>'application/json', 'User-Agent'=>'Signifyd Ruby v2'}).
             to_return(:status => 404, :body => "{\"investigationId\":14065}", :headers => {})
         }
 
         subject {
-          Signifyd.request(:post, '/v1/cases', hash)
+          Signifyd.request(:post, '/v2/cases', hash)
         }
 
         it { lambda { subject }.should raise_error }

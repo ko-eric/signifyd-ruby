@@ -54,7 +54,7 @@ module Signifyd
   # Version right now will be the url structure, might change later.
   # For now this is ok.
   # @return: String[url path of our current api version]
-  @@api_version = '/v1'
+  @@api_version = '/v2'
   
   # verify_ssl_certs
   # 
@@ -83,7 +83,7 @@ module Signifyd
   # This method is used to set the full url that the request will be made
   # to. Ideally, pass in the version of the API and then the method that
   # will be requested.
-    # An example retrun would be: 'https://signifyd.com/v1/cases
+    # An example retrun would be: 'https://signifyd.com/v2/cases
   # @return: String[url for request to be made]
   def self.api_url(url='')
     @@api_base + url
@@ -303,7 +303,7 @@ module Signifyd
     when RestClient::ServerBrokeConnection, RestClient::RequestTimeout
       message = "Could not connect to Signifyd (#{@@api_base}).  Please check your internet connection and try again."
     when RestClient::SSLCertificateNotVerified
-      message = "Could not verify Signifyd's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://api.signifyd.com/v1 in your browser.)  If this problem persists, let us know at support@signifyd.com."
+      message = "Could not verify Signifyd's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://api.signifyd.com/v2 in your browser.)  If this problem persists, let us know at support@signifyd.com."
     when SocketError
       message = "Unexpected error communicating when trying to connect to Signifyd.  HINT: You may be seeing this message because your DNS is not working.  To check, try running 'host signifyd.com' from the command line."
     else
