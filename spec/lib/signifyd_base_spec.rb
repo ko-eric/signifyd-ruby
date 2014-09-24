@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'debugger'
+
 describe Signifyd do
   let(:hash) { SignifydRequests.valid_case }
   let(:json) { JSON.dump(hash) }
@@ -495,7 +495,7 @@ describe Signifyd do
     }
 
     subject {
-      Signifyd.general_api_error @error, @rcode, @rbody
+      Signifyd.general_api_error @rcode, @rbody
     }
 
     it { lambda { subject }.should raise_error(Signifyd::APIError) }

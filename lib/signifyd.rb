@@ -357,7 +357,7 @@ module Signifyd
     else
       error[:message] = "API error"
       error[:param]  = ""
-      raise general_api_error error, rcode, rbody
+      raise general_api_error rcode, rbody
     end
   end
 
@@ -369,7 +369,7 @@ module Signifyd
     raise AuthenticationError.new(error[:message], error[:param], rcode, rbody)
   end
 
-  def self.general_api_error(error, rcode, rbody)
+  def self.general_api_error(rcode, rbody)
     raise APIError.new("Invalid response object from API: #{rbody.inspect} (HTTP response code was #{rcode})", rcode, rbody)
   end
 
