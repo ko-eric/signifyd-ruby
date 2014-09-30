@@ -371,7 +371,6 @@ module Signifyd
   end
 
   def self.authentication_error(error, rcode, rbody)
-    debugger
     raise AuthenticationError.new(error[:message], error[:param], rcode, rbody)
   end
 
