@@ -213,7 +213,7 @@ module Signifyd
   # @param[Opt]: String[api_key] - 'YOUR-API-KEY'
   # @param[Opt]: Hash[options] - optional parameters
   # @return: Hash - containing response code, body, and other data
-  def self.request(method, url, params, api_key=nil, options={})
+  def self.request(method, url, params={}, api_key=nil, options={})
     api_key = api_key.nil? ? @@api_key : api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key
 
@@ -242,18 +242,20 @@ module Signifyd
     # Determine how to send the data and encode it based on what method we are sending. Some
     # are necessary, some are not.
     case method.to_s
-    when 'get'  || :get
+    when 'get'
+      if options.has_key?(:order_id)
+        url = url.gsub('cases', "orders/#{options[:order_id]}/case")
+      end
+    when 'post'
 
-    when 'post' || :post
-
-    when 'put'  || :put
+    when 'put'
       # we need to eject out the case_id from the params hash and append it to the url
       if params.has_key?(:case_id) || params.has_key?('case_id')
         case_id = params.delete(:case_id)
         params.reject! { |k| k == :case_id || k == 'case_id' }
         url << "/#{case_id}"
       end
-    when 'delete' || :delete
+    when 'delete'
 
     end
 
