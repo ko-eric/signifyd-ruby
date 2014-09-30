@@ -6,6 +6,7 @@ require 'uri'
 require 'json'
 require 'base64'
 require 'openssl'
+require 'debugger'
 
 # Gem Version
 require 'signifyd/version'
@@ -213,7 +214,9 @@ module Signifyd
   # @param[Opt]: String[api_key] - 'YOUR-API-KEY'
   # @param[Opt]: Hash[options] - optional parameters
   # @return: Hash - containing response code, body, and other data
-  def self.request(method, url, params, api_key=nil, options={})
+  def self.request(method, url, params={}, api_key=nil, options={})
+    # params  = params.with_indifferent_access
+    # options = options.with_indifferent_access
     api_key = api_key.nil? ? @@api_key : api_key
     raise AuthenticationError.new('No API key provided. Fix: Signifyd.api_key = \'Your API KEY\'') unless api_key
 
@@ -243,7 +246,9 @@ module Signifyd
     # are necessary, some are not.
     case method.to_s
     when 'get'  || :get
-
+      if options.has_key?(:order_id)
+        url = url.gsub('cases', "orders/#{options[:order_id]}/case")
+      end
     when 'post' || :post
 
     when 'put'  || :put
@@ -366,6 +371,7 @@ module Signifyd
   end
 
   def self.authentication_error(error, rcode, rbody)
+    debugger
     raise AuthenticationError.new(error[:message], error[:param], rcode, rbody)
   end
 
