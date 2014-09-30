@@ -1,34 +1,30 @@
-# Signifyd Ruby 
-
-[![Build Status](https://travis-ci.org/signifyd/signifyd-ruby.png?branch=master)](https://travis-ci.org/signifyd/signifyd-ruby)
-[![Code Climate](https://codeclimate.com/github/signifyd/signifyd-ruby.png)](https://codeclimate.com/github/signifyd/signifyd-ruby)
-[![Coverage Status](https://coveralls.io/repos/signifyd/signifyd-ruby/badge.png?branch=master)](https://coveralls.io/r/signifyd/signifyd-ruby)
+# Signifyd Ruby
 
 ## Introduction
-This is the official ruby library for the Signifyd API rubygem. Install the gem, get your API key from the Signifyd portal at [Signifyd](https://signifyd.com) and start posting your transactions for fraud detection/scoring. Every transaction you post to the API, it will create a new investigation. 
+This is the UNofficial inherited ruby library for the Signifyd API rubygem. Install the gem, get your API key from the Signifyd portal at [Signifyd](https://signifyd.com) and start posting your transactions for fraud detection/scoring. Every transaction you post to the API, it will create a new investigation.
 
-Before using this library, be sure to look at our third party authentications you can add to your account. Signifyd allows you to connect your Stripe or Shopify store/account and it will automatically create investigations for your transactions as they come in realtime. 
+Before using this library, be sure to look at our third party authentications you can add to your account. Signifyd allows you to connect your Stripe or Shopify store/account and it will automatically create investigations for your transactions as they come in realtime.
 
 Please read the [documentation](https://www.signifyd.com/docs/api) for creating a case. Even though you are using the ruby library we have created, you must still adhere to the data type and encoding of the data to match what we expect a correct post will be.
 
-## Installation 
+## Installation
 The gem can be used for a stand alone ruby application, Sinatra or a Rails application.
 
-	$ gem install signifyd
-	
+	$ gem install signifyd-ruby
+
 For Rails applications, include in Gemfile.
 
 ```ruby
-gem 'signifyd'
+gem 'signifyd-ruby'
 ```
 
-Now that you have installed the gem. Go ahead and configure your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line. 
+Now that you have installed the gem. Go ahead and configure your API-key. In a Rails application, you can create a file `config/initializers/signifyd.com` and include this line.
 
 ```ruby
-require 'signifyd'
+require 'signifyd-ruby'
 Signifyd.api_key = 'YOUR-API-KEY'
 ```
-	
+
 Otherwise include and set this in an initialization block of your Sinatra or Ruby application. This will persist throughout the lifetime of your application. If you do not set your API key globally like the example above. You can pass your key into any method and it will authenticate on each single request as follows:
 
 ```ruby
@@ -37,7 +33,7 @@ create = Signifyd::Case.create(transaction_hash, 'YOUR-API-KEY')
 update = Signifyd::Case.update(case_id, attributes_hash, 'YOUR-API-KEY')
 ```
 ## Errors
-You can catch your errors based on these sub classes. 
+You can catch your errors based on these sub classes.
 
 ```ruby
 begin
@@ -57,7 +53,7 @@ Upon a successful case/investigation creation or any endpoint called. Signifyd w
 Currently Signifyd supports the following methods for investigations against your transactions. The Cases endpoint is where you will start. Encode your transaction to match the JSON we require for a successful creation and make your request.
 
 ### Cases
-To create a case, follow the instructions below. Please read the [documentation](https://www.signifyd.com/docs/api) under your account. It is imperative that you follow the guides correctly and encode all pieces of data with the correct format and data types otherwise this will effect the score of your transaction's investigation. 
+To create a case, follow the instructions below. Please read the [documentation](https://www.signifyd.com/docs/api) under your account. It is imperative that you follow the guides correctly and encode all pieces of data with the correct format and data types otherwise this will effect the score of your transaction's investigation.
 
 ```ruby
 transaction = {
@@ -148,18 +144,18 @@ transaction = {
 
 List cases:
 ```ruby
-> Signifyd::Case.all({count: 100, offset: 0}, {})
+> Signifyd::Case.all({count: 100, offset: 0})
 => {code: 200, body: []}
 ```
 
-Create a case: 
+Create a case:
 
 ```ruby
-> Signifyd::Case.create(transaction, {})
+> Signifyd::Case.create(transaction)
 => {code: 201, body: {investigationId: 48573}}
 ```
 
-Update a case: 
+Update a case:
 
 ```ruby
 > data = {'purchase' => {'avsResponseCode' => 'Y', 'cvvResponseCode' => 'M'}}
@@ -167,6 +163,12 @@ Update a case:
 => {code: 200, body: {investigationBody}}
 ```
 
-All methods will be restful and will respond to a CRUD interface. `/cases` accepts GET requests to return all your cases, POST, with a json body to create a case, PUT, with a case_id to update a case and DELETE to remove an investigation. 
+Find a case by orderId:
+```ruby
+> Signifyd::Case.find({order_id: orderId})
+=> {code: 200, body: {caseBody}}
+```
+
+All methods will be restful and will respond to a CRUD interface. `/cases` accepts GET requests to return all your cases, POST, with a json body to create a case, PUT, with a case_id to update a case and DELETE to remove an investigation.
 
 In the future, we could switch to this ca: http://curl.haxx.se/ca/cacert.pem

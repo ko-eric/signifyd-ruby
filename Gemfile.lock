@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    signifyd (0.1.5)
+    signifyd-ruby (0.1.6)
       activesupport
       rest-client
 
@@ -97,6 +97,6 @@ DEPENDENCIES
   rspec-mocks
   rspec-rails
   shoulda-matchers
-  signifyd!
+  signifyd-ruby!
   simplecov
   webmock
