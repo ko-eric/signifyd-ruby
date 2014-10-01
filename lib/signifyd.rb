@@ -6,7 +6,6 @@ require 'uri'
 require 'json'
 require 'base64'
 require 'openssl'
-require 'debugger'
 
 # Gem Version
 require 'signifyd/version'
